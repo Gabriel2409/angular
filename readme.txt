@@ -28,9 +28,12 @@ Note in some cases they can be equivalent
 
 from html to ts
 event binding (event)="expression"
+$event keyword in html references the event
 
 two way binding
 [(ngModel)] = "data"
+need forms module in app.component.ts
+import { FormsModule } from '@angular/forms'
 
 -------
 constructor is called on creation of element
