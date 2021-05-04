@@ -37,3 +37,15 @@ import { FormsModule } from '@angular/forms'
 
 -------
 constructor is called on creation of element
+
+----
+if directive : it has a star because it is a structural directive
+<p *ngIf="this.serverCreated; else noServer">Server {{ serverName }} was created</p>
+<ng-template #noServer>
+	<p>no server was created</p>
+</ng-template>
+
+----
+attribute directive : only change element they were placed on (no start)
+
+<p [ngStyle]="{backgroundColor: getColor()}" >Example</p>
