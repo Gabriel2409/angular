@@ -1,3 +1,7 @@
-p{
-	color:red;
+.online {
+  color: white;
+}
+
+.offline {
+  color: orange;
 }

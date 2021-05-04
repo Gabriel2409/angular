@@ -45,7 +45,15 @@ if directive : it has a star because it is a structural directive
 	<p>no server was created</p>
 </ng-template>
 
+
+for loop : servers here is an array
+<app-server *ngFor="let server of servers"></app-server>
+
 ----
 attribute directive : only change element they were placed on (no start)
 
 <p [ngStyle]="{backgroundColor: getColor()}" >Example</p>
+
+add or remove class based on truthy value
+<p [ngClass]="{online: serverStatus === 'online', offline: serverStatus === 'offline'}"></p>
+

@@ -1,2 +1,5 @@
-<p [ngStyle]="{backgroundColor: getColor()}" >my server has the id {{ serverId }} and the status {{ getServerStatus() }}</p>
-<p>You can do ts code in here : 4 + 2  is {{ 4 + 2}}</p>
+<p [ngStyle]="{backgroundColor: getColor()}" class="online"
+	[ngClass]="{online: serverStatus === 'online', offline: serverStatus === 'offline'}">my server has the id {{
+	serverId }} and the status
+	{{ getServerStatus() }}</p>
+<p>You can do ts code in here : 4 + 2 is {{ 4 + 2}}</p>
