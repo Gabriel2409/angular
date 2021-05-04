@@ -1,0 +1,7 @@
+<label for="usrname">Username</label>
+<input type="text" name="username" [(ngModel)]="username">
+
+<p>My username is {{ username }} </p>
+
+
+<button [disabled]="!this.username.length" (click)="clearUsername()">Clear username</button>
