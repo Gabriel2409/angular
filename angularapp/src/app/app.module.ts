@@ -7,10 +7,11 @@ import { ServerComponent} from './server/server.component';
 import { ServersComponent } from './servers/servers.component'
 import { WarningAlertComponent } from './warning-alert/warning-alert.component';
 import { ErrorAlertComponent } from './error-alert/error-alert.component';
-import { UsernameComponent } from './username/username.component'
+import { UsernameComponent } from './username/username.component';
+import { SecretComponent } from './secret/secret.component'
 
 @NgModule({
-    declarations: [AppComponent, ServerComponent, ServersComponent, WarningAlertComponent, ErrorAlertComponent, UsernameComponent],
+    declarations: [AppComponent, ServerComponent, ServersComponent, WarningAlertComponent, ErrorAlertComponent, UsernameComponent, SecretComponent],
     imports: [BrowserModule, FormsModule],
     providers: [],
     bootstrap: [AppComponent],

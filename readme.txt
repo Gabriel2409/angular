@@ -57,3 +57,6 @@ attribute directive : only change element they were placed on (no start)
 add or remove class based on truthy value
 <p [ngClass]="{online: serverStatus === 'online', offline: serverStatus === 'offline'}"></p>
 
+example of for with index 
+<p *ngFor="let c of clickArr; let i = index;" 
+	[ngClass]="{'colored': i >= 5 }">{{c}} --- {{i}}</p>
