@@ -60,3 +60,21 @@ add or remove class based on truthy value
 example of for with index 
 <p *ngFor="let c of clickArr; let i = index;" 
 	[ngClass]="{'colored': i >= 5 }">{{c}} --- {{i}}</p>
+
+
+---- ts classes : 
+export class Ingredient {
+  public name: string;
+  public amount: number;
+
+  constructor(name: string, amount: number) {
+    this.name = name;
+    this.amount = amount;
+  }
+}
+
+
+// * same as writing
+export class Ingredient {
+  constructor(public name: string, public amount: number) {}
+}
