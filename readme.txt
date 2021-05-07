@@ -79,7 +79,7 @@ export class Ingredient {
   constructor(public name: string, public amount: number) {}
 }
 
----- pass data to child component 
+---- pass data to child component =custom property binding
 in parent : 
 export class AppComponent {
   serverElements = [
@@ -92,7 +92,6 @@ export class AppComponent {
 }
 
 <app-server-element *ngFor="let serverElement of serverElements;" [element]="serverElement"></app-server-element>
-
 in child : use Input decorator to expose element to the world
 export class ServerElementComponent implements OnInit {
   @Input()
@@ -106,4 +105,44 @@ export class ServerElementComponent implements OnInit {
 
   ngOnInit(): void {}
 }
-Note : use @Input("myalias") to bind to [alias] in parent component
+Note : use @Input("myalias") to bind to [myalias] in parent component
+-------
+
+pass data to parent component -custom event emitter
+
+In parent : 
+<app-cockpit (serverAdded)="onServerAdded($event)"></app-cockpit>
+
+ onServerAdded(serverData: { serverName: string; serverContent: string }) {
+    this.serverElements.push({
+      type: "server",
+      name: serverData.serverName,
+      content: serverData.serverContent,
+    });
+  }
+
+In child : 
+<button
+    class="btn btn-primary"
+    (click)="onAddServer()">Add Server</button>
+<button
+
+
+export class CockpitComponent implements OnInit {
+  @Output()
+  serverAdded = new EventEmitter<{
+    serverName: string;
+    serverContent: string;
+  }>();
+
+  constructor() {}
+  ngOnInit(): void {}
+  onAddServer() {
+    this.serverAdded.emit({
+      serverName: this.newServerName,
+      serverContent: this.newServerContent,
+    });
+  }
+}
+
+Note : use @Output("myalias") to bind to (myalias) in parent component
