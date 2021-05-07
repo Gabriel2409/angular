@@ -106,3 +106,4 @@ export class ServerElementComponent implements OnInit {
 
   ngOnInit(): void {}
 }
+Note : use @Input("myalias") to bind to [alias] in parent component
