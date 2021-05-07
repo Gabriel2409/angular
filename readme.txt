@@ -78,3 +78,31 @@ export class Ingredient {
 export class Ingredient {
   constructor(public name: string, public amount: number) {}
 }
+
+---- pass data to child component 
+in parent : 
+export class AppComponent {
+  serverElements = [
+    {
+      type: "server",
+      name: "TestServer",
+      content: "Just a test",
+    },
+  ];
+}
+
+<app-server-element *ngFor="let serverElement of serverElements;" [element]="serverElement"></app-server-element>
+
+in child : use Input decorator to expose element to the world
+export class ServerElementComponent implements OnInit {
+  @Input()
+  element: {
+    type: string;
+    name: string;
+    content: string;
+  };
+
+  constructor() {}
+
+  ngOnInit(): void {}
+}
