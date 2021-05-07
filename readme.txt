@@ -146,3 +146,17 @@ export class CockpitComponent implements OnInit {
 }
 
 Note : use @Output("myalias") to bind to (myalias) in parent component
+
+
+---- 
+encapsulation :
+angular adds these attributes to the DOM _ngcontent-hpn-c41
+They depend on the component
+
+If I pass
+encapsulation: ViewEncapsulation.None
+then they are not applied and the style defined in the css of the component are 
+passed globally
+
+encapsulation: ViewEncapsulation.Native should give the same results as Emulated (default value)
+but only on browser that support the shadow DOM
