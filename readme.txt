@@ -223,5 +223,15 @@ ngAfterViewInit			called after the component's view (and child views) has been i
 ngAfterViewChecked		called every time the view (and child views) have been checked
 ngOnDestroy				called once the component is about to be destroyed
 
---- 
-not possible to access templates ref before ngAfterViewInit
+
+Note : not possible to access templates ref before ngAfterViewInit
+
+----
+ContentChild : same as view child 
+in parent : 
+<p #contentParagraph>Extra content</p>
+in child html : 
+<ng-content></ng-content>
+In child ts : 
+@ContentChild("contentParagraph", { static: true }) paragraph: ElementRef;
+Can be accessed on ngAfterContentInit

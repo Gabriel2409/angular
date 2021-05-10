@@ -6,7 +6,7 @@
 			<button class="btn btn-primary" (click)="onChangeFirst()">Change First element</button>
 			<button class="btn btn-danger" (click)="onDestroyFirst()">Destroy First element</button>
 			<app-server-element *ngFor="let serverElement of serverElements;" [srvElement]="serverElement">
-				<p>Extra content</p>
+				<p #contentParagraph>Extra content</p>
 			</app-server-element>
 		</div>
 	</div>
