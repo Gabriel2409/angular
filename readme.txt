@@ -202,3 +202,12 @@ onAddServer(nameInput: HTMLInputElement) {
   }
 
 Note : do not change the element through this, it is bad. Angular offers a better way to access the DOM
+
+---- projecting content with ng-content
+by default, what is between two components html tags is not shown. Except if you put a ng-content
+
+ex : in parent
+<app-child>Extra content</app-child>
+in child:
+<p>Regular content</p>
+<ng-content></ng-content>
