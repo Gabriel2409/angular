@@ -181,3 +181,24 @@ onAddServer(nameInput: HTMLInputElement) {
       serverContent: this.newServerContent,
     });
   }
+
+----
+viewchild : lots of use (with local ref, or with component name directly)
+Most used case = with local ref. Ex below
+
+Unlike the local reference passed in the template that refereced the html element 
+itself, when we pass the local ref in ViewChild, it is of type ElementRef
+
+<input type="text" class="form-control" #serverContentInput>
+
+
+@ViewChild("serverContentInput") servContent: ElementRef;
+
+onAddServer(nameInput: HTMLInputElement) {
+    this.serverAdded.emit({
+      serverName: nameInput.value,
+      serverContent: this.servContent.nativeElement.value,
+    });
+  }
+
+Note : do not change the element through this, it is bad. Angular offers a better way to access the DOM
