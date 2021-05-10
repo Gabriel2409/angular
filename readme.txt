@@ -160,3 +160,24 @@ passed globally
 
 encapsulation: ViewEncapsulation.Native should give the same results as Emulated (default value)
 but only on browser that support the shadow DOM
+
+
+---- 
+local reference in templates
+add a #myname in a html element to reuse it inside the html template : 
+
+<input type="text" class="form-control" #serverNameInput>
+<button
+        class="btn btn-primary"
+        (click)="onAddServer(serverNameInput)">Add Server</button>
+      <button
+
+and in ts
+
+onAddServer(nameInput: HTMLInputElement) {
+
+    this.serverAdded.emit({
+      serverName: nameInput.value,
+      serverContent: this.newServerContent,
+    });
+  }
