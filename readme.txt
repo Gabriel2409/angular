@@ -222,3 +222,6 @@ ngAfterContentChecked	called every time the projected content has been checked (
 ngAfterViewInit			called after the component's view (and child views) has been initialized 
 ngAfterViewChecked		called every time the view (and child views) have been checked
 ngOnDestroy				called once the component is about to be destroyed
+
+--- 
+not possible to access templates ref before ngAfterViewInit
