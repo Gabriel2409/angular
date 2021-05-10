@@ -211,3 +211,14 @@ ex : in parent
 in child:
 <p>Regular content</p>
 <ng-content></ng-content>
+
+------ Component lifecycle -----
+
+ngOnChanges				called after a bound input property changes <- properties decorated with @Input / receives an argument of type SimpleChanges
+ngOnInit				called once the component is initialized <- runs after the constructor
+ngDoCheck				called during every change detection run <- is called a lot
+ngAfterContentInit		called after content (ng-content) has been projected into view
+ngAfterContentChecked	called every time the projected content has been checked (by angular change detection)
+ngAfterViewInit			called after the component's view (and child views) has been initialized 
+ngAfterViewChecked		called every time the view (and child views) have been checked
+ngOnDestroy				called once the component is about to be destroyed
