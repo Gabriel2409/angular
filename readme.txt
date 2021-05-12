@@ -245,18 +245,27 @@ structural : affect the dom
 Note : you cant have more than one structural directive on an element (no ngfor + ng if)
 
 custom directive 
-import { Directive, ElementRef, OnInit } from "@angular/core";
+import { Directive, ElementRef, Renderer2 } from "@angular/core";
 
 @Directive({
-  selector: "[appBasicHighlight]",
+  selector: "[appBetterHighlight]",
 })
-export class BasicHighlightDirective implements OnInit {
-  constructor(private elementRef: ElementRef) {}
+export class BetterHighlightDirective {
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {}
   ngOnInit() {
-    this.elementRef.nativeElement.style.backgroundColor = "green";
+    this.renderer.setStyle(
+      this.elRef.nativeElement,
+      "background-color",
+      "blue"
+    );
   }
 }
 
 In app.module.ts, i need to import and declare it
 To use it, no square bracket 
-<p appBasicHighlight>Style me with basic directive</p>
+<p appBetterHighlight>Style me with better directive</p>
+
+----
+Note : Generate a directive with ng g d
+Note : renderer is the preferred way to change style because angular is not limited to the browser
+and can work in services who have no access to the dom
