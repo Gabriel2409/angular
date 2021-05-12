@@ -243,3 +243,20 @@ directives :
 attribute : only affect the element they are on
 structural : affect the dom 
 Note : you cant have more than one structural directive on an element (no ngfor + ng if)
+
+custom directive 
+import { Directive, ElementRef, OnInit } from "@angular/core";
+
+@Directive({
+  selector: "[appBasicHighlight]",
+})
+export class BasicHighlightDirective implements OnInit {
+  constructor(private elementRef: ElementRef) {}
+  ngOnInit() {
+    this.elementRef.nativeElement.style.backgroundColor = "green";
+  }
+}
+
+In app.module.ts, i need to import and declare it
+To use it, no square bracket 
+<p appBasicHighlight>Style me with basic directive</p>
