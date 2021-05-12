@@ -318,3 +318,26 @@ into
 </ng-template>
 
 So it is just a custom property binding in fact. And that explains the ng-template with the else
+
+Example below : use with *appUnless="condition"
+import { Directive, Input, TemplateRef, ViewContainerRef } from "@angular/core";
+
+@Directive({
+  selector: "[appUnless]",
+})
+export class UnlessDirective {
+
+
+  @Input() set appUnless(condition: boolean) {
+    if (!condition) {
+      this.vcRef.createEmbeddedView(this.templateRef);
+    } else {
+      this.vcRef.clear();
+    }
+  }
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private vcRef: ViewContainerRef
+  ) {}
+}
