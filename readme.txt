@@ -299,3 +299,22 @@ host listener to listen to events in directives
 Note : in angular, if we pass a string, we can omit the [] if we omit the '' :
 example [defaultColor]="'yellow'" is the same as defaultColor="yellow"
 
+---
+for structural directives, behind the scene, angular does not know *. In fact it transforms
+
+<div *ngIf="!onlyOdd">
+	<li class="list-group-item" *ngFor="let even of evenNumbers" [ngClass]="{odd:even % 2 !== 0}">
+		{{ even }}
+	</li>
+</div>
+
+into 
+<ng-template [ngIf]="!onlyOdd">
+	<div>
+		<li class="list-group-item" *ngFor="let even of evenNumbers" [ngClass]="{odd:even % 2 !== 0}">
+			{{ even }}
+		</li>
+	</div>
+</ng-template>
+
+So it is just a custom property binding in fact. And that explains the ng-template with the else
