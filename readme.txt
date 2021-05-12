@@ -279,6 +279,23 @@ host listener to listen to events in directives
       "blue"
     );
   }
-
+-----
   host binding to bind a property of the element the directive is applied to
   @HostBinding("style.backgroundColor") backgroundColor: string;
+------
+  Custom property binding in directive :
+  in the directive ts file I can add input and then use a custom property binding on the 
+  element where there is the directive
+  @Input() defaultColor: string = "transparent";
+  @Input() highlightColor: string = "blue";
+
+  <p appBetterHighlight [defaultColor]="'yellow'" [highlightColor]="'red'">Style me with better directive</p>
+
+  Another solution if i have one main input; I can put directive between []
+
+   @Input("appBetterHighlight") highlightColor: string = "blue";
+<p [appBetterHighlight]="'red'" [defaultColor]="'yellow'">Style me with better directive</p>
+
+Note : in angular, if we pass a string, we can omit the [] if we omit the '' :
+example [defaultColor]="'yellow'" is the same as defaultColor="yellow"
+
