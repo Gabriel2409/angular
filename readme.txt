@@ -271,7 +271,7 @@ Note : renderer is the preferred way to change style because angular is not limi
 and can work in services who have no access to the dom
 
 ---
-host listener to listen to events 
+host listener to listen to events in directives
 @HostListener("mouseenter") mouseover(eventData: Event) {
     this.renderer.setStyle(
       this.elRef.nativeElement,
@@ -279,3 +279,6 @@ host listener to listen to events
       "blue"
     );
   }
+
+  host binding to bind a property of the element the directive is applied to
+  @HostBinding("style.backgroundColor") backgroundColor: string;
