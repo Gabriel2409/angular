@@ -235,3 +235,11 @@ in child html :
 In child ts : 
 @ContentChild("contentParagraph", { static: true }) paragraph: ElementRef;
 Can be accessed on ngAfterContentInit
+
+
+
+----
+directives : 
+attribute : only affect the element they are on
+structural : affect the dom 
+Note : you cant have more than one structural directive on an element (no ngfor + ng if)
