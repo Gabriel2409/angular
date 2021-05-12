@@ -269,3 +269,13 @@ To use it, no square bracket
 Note : Generate a directive with ng g d
 Note : renderer is the preferred way to change style because angular is not limited to the browser
 and can work in services who have no access to the dom
+
+---
+host listener to listen to events 
+@HostListener("mouseenter") mouseover(eventData: Event) {
+    this.renderer.setStyle(
+      this.elRef.nativeElement,
+      "background-color",
+      "blue"
+    );
+  }
