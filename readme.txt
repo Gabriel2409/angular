@@ -400,3 +400,23 @@ Any component: same instance of service is available for the component and all c
 Note : if you provide a service to a component and its child, the service provided in the child overwrites the one provided in the parent (new instance)
 To use the instance of a parent, keep it in the constructor of the child but remove it from the providers list
 
+---
+New syntax for application wide services : 
+Instead of adding a service class to the providers[]  array in AppModule , you can set the following config in @Injectable() :
+
+    @Injectable({providedIn: 'root'})
+    export class MyService { ... }
+
+This is exactly the same as:
+
+    export class MyService { ... }
+
+and
+
+    import { MyService } from './path/to/my.service';
+     
+    @NgModule({
+        ...
+        providers: [MyService]
+    })
+    export class AppModule { ... }
