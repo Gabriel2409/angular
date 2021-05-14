@@ -404,9 +404,8 @@ To use the instance of a parent, keep it in the constructor of the child but rem
 New syntax for application wide services : 
 Instead of adding a service class to the providers[]  array in AppModule , you can set the following config in @Injectable() :
 
-    @Injectable({providedIn: 'root'})
-    export class MyService { ... }
-
+    @Injectable({providedin: 'root'})
+    export class myservice { ... }
 This is exactly the same as:
 
     export class MyService { ... }
@@ -420,3 +419,11 @@ and
         providers: [MyService]
     })
     export class AppModule { ... }
+
+To inject a service into a service, i need to provide it at app.module level 
+and add @Injectable() on the service where i want to receive another service.
+Alternatively, I can use Injectable with @Injectable({providedin: 'root'})) so that
+I dont have to declare it in app.module.ts
+
+Note : you need injectable if you inject in the service, not if you inject the service
+somewhere else
