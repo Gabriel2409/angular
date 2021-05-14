@@ -1,3 +1,6 @@
+import { Injectable } from "@angular/core";
+
+@Injectable({ providedIn: "root" })
 export class AccountsService {
   accounts = [
     {
@@ -17,5 +20,7 @@ export class AccountsService {
     this.accounts.push({ name: name, status: status });
   }
 
-  updateStatus(id: number, status: string) {this.accounts[id].status = status}
+  updateStatus(id: number, status: string) {
+    this.accounts[id].status = status;
+  }
 }
