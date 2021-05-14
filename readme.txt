@@ -350,3 +350,16 @@ ngSwitch
 	<p *ngSwitchCase="100">Value is 100</p>
 	<p *ngSwitchDefault>Value is Def</p>
 </div>
+
+
+---- 
+services : they are standard class you put in a file : **.service.ts
+
+export class LoggingService {
+  logStatusChange(status: string) {
+    console.log(`A server status changed, new status: ${status})`);
+  }
+}
+
+Note : do not import the class and create a new instance when you want to use it, 
+Angular has a built in way to get access to services
