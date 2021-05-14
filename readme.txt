@@ -388,3 +388,15 @@ export class NewAccountComponent {
     this.loggingService.logStatusChange(accountStatus);
   }
 }
+
+When you create a service, Angular knows how to create the service for the component
+and also ALL the child components ! 
+
+Hierarchichal injector: where to provide the service
+
+AppModule : same instance of Service is available Application-wide
+AppComponent: same instance of Service is available for all Components but not for other services
+Any component: same instance of service is available for the component and all children components (and children of children)
+Note : if you provide a service to a component and its child, the service provided in the child overwrites the one provided in the parent (new instance)
+To use the instance of a parent, keep it in the constructor of the child but remove it from the providers list
+
