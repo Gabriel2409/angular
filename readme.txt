@@ -427,3 +427,14 @@ I dont have to declare it in app.module.ts
 
 Note : you need injectable if you inject in the service, not if you inject the service
 somewhere else
+
+--- Cross component communication
+create an event emitter in the service
+emit event in component A
+subscribe to event in component B (in constructor for ex)
+
+service : statusUpdated = new EventEmitter<string>()
+
+comp A:	this.accountsService.statusUpdated.emit(status)
+
+ constructor() {this.accountsService.statusUpdated.subscribe((status:string)=>{alert(`New status ${status}`)})
