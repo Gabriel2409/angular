@@ -437,4 +437,4 @@ service : statusUpdated = new EventEmitter<string>()
 
 comp A:	this.accountsService.statusUpdated.emit(status)
 
- constructor() {this.accountsService.statusUpdated.subscribe((status:string)=>{alert(`New status ${status}`)})
+ ngOnInit() {this.accountsService.statusUpdated.subscribe((status:string)=>{alert(`New status ${status}`)})
