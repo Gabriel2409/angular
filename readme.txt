@@ -482,3 +482,16 @@ It is possible to add additionnal config to fix this
 		routerLinkActive="active"
 		[routerLinkActiveOptions]="{ exact: true }"
 	>
+
+---- accessing router in ts file
+import { Router } from '@angular/router';
+...
+export class HomeComponent implements OnInit {
+  constructor(private router: Router) {}
+
+  ngOnInit() {}
+  onLoadServers() {
+    // do sthg
+    this.router.navigate(['/servers']);
+  }
+}
