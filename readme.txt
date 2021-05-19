@@ -438,3 +438,25 @@ service : statusUpdated = new EventEmitter<string>()
 comp A:	this.accountsService.statusUpdated.emit(status)
 
  ngOnInit() {this.accountsService.statusUpdated.subscribe((status:string)=>{alert(`New status ${status}`)})
+
+ ------------- 
+ routing
+
+in app.module.ts
+import { RouterModule, Routes } from "@angular/router";
+
+then 
+const appRoutes: Routes = [
+	{ path: "", component: HomeComponent },
+	{ path: "users", component: UsersComponent },
+	{ path: "servers", component: ServersComponent },
+];
+
+then 
+in  @NgModule, 
+imports: [BrowserModule, FormsModule, RouterModule.forRoot(appRoutes)],
+
+
+in app.component.ts
+use <router-outlet></router-outlet> to render your routes
+In the example above, i can access my UsersComponent by going to /users
