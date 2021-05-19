@@ -469,3 +469,16 @@ Instead: use the routerLink directive
 
  Note : relative path can be used without the / or with ./
  It is also possible to use ../
+
+---Attach a class to active route
+routerLinkActive directive to attach a given class: note that by default, all the 
+routes containing the path are active. 
+<li role="presentation" routerLinkActive="active"><a routerLink="/servers">Servers</a></li>
+
+It is possible to add additionnal config to fix this
+
+	<li
+		role="presentation"
+		routerLinkActive="active"
+		[routerLinkActiveOptions]="{ exact: true }"
+	>
