@@ -466,3 +466,6 @@ Instead: use the routerLink directive
  <li role="presentation"><a routerLink="/servers">Servers</a></li>
  or 
  <li role="presentation"><a [routerLink]="['/users', 'something']">Users</a></li>
+
+ Note : relative path can be used without the / or with ./
+ It is also possible to use ../
