@@ -460,3 +460,9 @@ imports: [BrowserModule, FormsModule, RouterModule.forRoot(appRoutes)],
 in app.component.ts
 use <router-outlet></router-outlet> to render your routes
 In the example above, i can access my UsersComponent by going to /users
+
+---Implementing navigation : do not just put a link with href as it will reload the app
+Instead: use the routerLink directive
+ <li role="presentation"><a routerLink="/servers">Servers</a></li>
+ or 
+ <li role="presentation"><a [routerLink]="['/users', 'something']">Users</a></li>
