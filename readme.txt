@@ -505,3 +505,16 @@ add this in constructor : private route: ActivatedRoute
     console.log('reload');
     this.router.navigate(['./'], { relativeTo: this.route });
   }
+
+  --- passing parameters
+  in app.module, add this route with :id
+  { path: 'users/:id', component: UserComponent },
+  
+  then in your component
+   constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.user = {
+      id: this.route.snapshot.params['id'],
+    };
+  }
