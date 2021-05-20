@@ -495,3 +495,13 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/servers']);
   }
 }
+Note : unlike routerLink, this.router.navigate does not know on what route I am so I can omit the first /
+
+
+If i want a relative route:
+import { ActivatedRoute, Router } from '@angular/router';
+add this in constructor : private route: ActivatedRoute
+ onReload() {
+    console.log('reload');
+    this.router.navigate(['./'], { relativeTo: this.route });
+  }
