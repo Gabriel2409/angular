@@ -518,3 +518,13 @@ add this in constructor : private route: ActivatedRoute
       id: this.route.snapshot.params['id'],
     };
   }
+
+ potential error : if i reacess the same component for ex with
+ <a [routerLink]="['/users', 10, 'Anna']">Load Anna (10)</a>, then when I click on the link,
+ the route is changed but the component is NOT rerendered as it is on the same route, which means ngOnInit is not executed
+So in ngOnInit, it is fine to use the snapshot approach. But we must add something to react to changes
+
+    this.route.params.subscribe((params: Params) => {
+      this.user.id = params['id'];
+      this.user.name = params['name'];
+    });
