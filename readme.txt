@@ -581,3 +581,9 @@ TO do it in a ts file :
       fragment: 'loading',
     });
   }
+
+---- retrieve query parameters and fragment:
+first approach, in ngOnInit: this.route.snapshot.queryParams and this.route.snapshot.fragment
+
+To react on changes, same logic as before, we can subscribe
+this.route.queryParams.subscribe() and this.route.fragment.subsribe()
