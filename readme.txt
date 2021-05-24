@@ -589,3 +589,24 @@ To react on changes, same logic as before, we can subscribe
 this.route.queryParams.subscribe() and this.route.fragment.subsribe()
 
 NOTE : params are recovered as string. To get them as nb, you can do +this.route.snapshot.params['id']
+
+---nested routes : 
+possibility to add children in routes. Then in coresponding component, we must add a <router-outlet></router-outlet>
+
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: 'users',
+    component: UsersComponent,
+    children: [{ path: ':id/:name', component: UserComponent }],
+  },
+  {
+    path: 'servers',
+    component: ServersComponent,
+    children: [
+      { path: ':id', component: ServerComponent },
+      { path: ':id/:name', component: EditServerComponent },
+    ],
+  },
+];
+

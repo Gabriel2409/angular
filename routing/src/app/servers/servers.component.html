@@ -2,21 +2,22 @@
   <div class="col-xs-12 col-sm-4">
     <div class="list-group">
       <a
-	    [routerLink]="['/servers', server.id]"
-		[queryParams]="{allowEdit:1}"
-		[fragment]="'loading'"
+        [routerLink]="['/servers', server.id]"
+        [queryParams]="{ allowEdit: 1 }"
+        [fragment]="'loading'"
         href="#"
         class="list-group-item"
-        *ngFor="let server of servers">
+        *ngFor="let server of servers"
+      >
         {{ server.name }}
       </a>
     </div>
   </div>
   <div class="col-xs-12 col-sm-4">
-    <app-edit-server></app-edit-server>
+    <router-outlet></router-outlet>
+    <!-- <app-edit-server></app-edit-server>
     <hr>
-    <!-- <app-server></app-server> -->
-	<button class="btn btn-primary" (click)="onReload()">Reload</button>
+    <app-server></app-server>
+	<button class="btn btn-primary" (click)="onReload()">Reload</button> -->
   </div>
 </div>
-
