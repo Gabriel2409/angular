@@ -610,3 +610,6 @@ const appRoutes: Routes = [
   },
 ];
 
+--- query params handling when changing route
+this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'merge' }); // merge with queryParams of next route
+this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'preserve' }); // keeps queryparams of previous route
