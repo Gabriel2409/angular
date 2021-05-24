@@ -587,3 +587,5 @@ first approach, in ngOnInit: this.route.snapshot.queryParams and this.route.snap
 
 To react on changes, same logic as before, we can subscribe
 this.route.queryParams.subscribe() and this.route.fragment.subsribe()
+
+NOTE : params are recovered as string. To get them as nb, you can do +this.route.snapshot.params['id']
