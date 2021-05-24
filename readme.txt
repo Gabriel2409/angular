@@ -560,3 +560,24 @@ export class UserComponent implements OnInit, OnDestroy {
     this.paramSubscription.unsubscribe();
   }
 }
+ --- query parameters
+  <a
+	    [routerLink]="['/servers', 5, 'edit']"
+		[queryParams]="{allowEdit:1}"
+		[fragment]="'loading'"
+        href="#"
+        class="list-group-item"
+        *ngFor="let server of servers">
+        {{ server.name }}
+      </a>
+ 
+ links to 
+ /servers/5/edit?allowEdit=1#loading
+
+TO do it in a ts file : 
+  onLoadServer(id: number) {
+    this.router.navigate(['/servers', id, 'edit'], {
+      queryParams: { allowEdit: 1 },
+      fragment: 'loading',
+    });
+  }
