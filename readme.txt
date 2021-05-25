@@ -618,7 +618,29 @@ this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'p
   { path: 'not-found', component: PageNotFoundComponent },
   { path: 'something', redirectTo: "not-found"},
 
+Note : if you want full path matching
+{ path: '', redirectTo: '/somewhere-else', pathMatch: 'full' }
+
 
 --- wildcard redirect : 
 { path: '**', redirectTo: "not-found"},
 BE SURE THIS ROUTE IS THE LAST
+
+--- outsourcing the route config
+in app-routing.module.ts
+
+import ...
+
+const appRoutes: Routes = [
+  ... all the paths
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule], // exposes the router to the other modules
+})
+export class AppRoutingModule {}
+
+in app.module.ts
+
+ imports: [BrowserModule, FormsModule, AppRoutingModule],
