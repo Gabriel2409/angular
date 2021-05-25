@@ -613,3 +613,12 @@ const appRoutes: Routes = [
 --- query params handling when changing route
 this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'merge' }); // merge with queryParams of next route
 this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'preserve' }); // keeps queryparams of previous route
+
+--- redirect 
+  { path: 'not-found', component: PageNotFoundComponent },
+  { path: 'something', redirectTo: "not-found"},
+
+
+--- wildcard redirect : 
+{ path: '**', redirectTo: "not-found"},
+BE SURE THIS ROUTE IS THE LAST
