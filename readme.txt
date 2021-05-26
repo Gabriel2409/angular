@@ -644,3 +644,39 @@ export class AppRoutingModule {}
 in app.module.ts
 
  imports: [BrowserModule, FormsModule, AppRoutingModule],
+
+ ----- guard : code executed on access / leave of route
+ First create a guard with a canActivate method
+ for ex: 
+import { Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot,
+  Router,
+} from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from './auth-service';
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return this.authService.isAuthenticated().then((authenticated: boolean) => {
+      if (authenticated) {
+        return true;
+      } else {
+        this.router.navigate(['/']);
+      }
+    });
+  }
+}
+
+Add this in the route where we want to protect : 
+canActivate: [AuthGuard],
+
+Note : remember to add the imported services to app.module.ts
