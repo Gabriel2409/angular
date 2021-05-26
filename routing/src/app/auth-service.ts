@@ -10,7 +10,7 @@ export class AuthService {
     return promise;
   }
 
-  logging() {
+  login() {
     this.loggedIn = true;
   }
   logout() {
