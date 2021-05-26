@@ -680,3 +680,7 @@ Add this in the route where we want to protect :
 canActivate: [AuthGuard],
 
 Note : remember to add the imported services to app.module.ts
+
+--- protect child routes
+
+Same logic but we create a function called canActivateChild and put it into the route
