@@ -796,3 +796,7 @@ and in my component, i subscribe to the route data
 		this.server = data["server"]
 	})  
 	}
+
+---- LOCATION STRATEGY
+the server must be configured so that a 404 returns the index html so that angular can then parse the route
+Alternative approach using a hash sign : in app.routing, you can pass an arg to RouterModule.forRoot : {useHash: True}
