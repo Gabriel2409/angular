@@ -755,7 +755,7 @@ in app-routing:
     component: ErrorPageComponent,
     data: { message: 'Page Not Found!' },
   },
-  
+
 in component : either option 1 or commented option works
   ngOnInit(): void {
 	  this.errorMessage = this.route.snapshot.data["message"]
@@ -763,3 +763,36 @@ in component : either option 1 or commented option works
 	// 	  this.errorMessage = data["message"]
 	//   })
   }
+
+--- passing dynamic data : use of a resolve service : 
+import { Injectable } from "@angular/core";
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router"
+import { Observable } from "rxjs/Observable";
+import { ServersService } from "../servers.service";
+
+interface Server {
+	id: number;
+	name: string;
+	status: string;
+}
+
+@Injectable()
+export class ServerResolver implements Resolve<Server>{
+
+	constructor(private serversService: ServersService){}
+
+	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Server> | Promise<Server> | Server {
+		return this.serversService.getServer(+route.params["id"])
+	}
+
+}
+
+Then i add it to the providers in app.module
+Then in app-routing.module: { path: ':id', component: ServerComponent, resolve: {server: ServerResolver} },
+and in my component, i subscribe to the route data
+
+ ngOnInit() {
+	this.route.data.subscribe((data: Data)=>{
+		this.server = data["server"]
+	})  
+	}
