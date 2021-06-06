@@ -746,3 +746,20 @@ And then i add it to the app-routing.module and the providers of app.module
 
 Note : it i want to tie the canDeactivate to a specific component, i can use it
 directly instead of creating the CanComponentDeactivate interface
+
+---- passing static data to a route
+
+in app-routing: 
+ {
+    path: 'not-found',
+    component: ErrorPageComponent,
+    data: { message: 'Page Not Found!' },
+  },
+  
+in component : either option 1 or commented option works
+  ngOnInit(): void {
+	  this.errorMessage = this.route.snapshot.data["message"]
+	//   this.route.data.subscribe(( data:Data )=>{
+	// 	  this.errorMessage = data["message"]
+	//   })
+  }
