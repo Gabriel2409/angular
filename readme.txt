@@ -684,3 +684,65 @@ Note : remember to add the imported services to app.module.ts
 --- protect child routes
 
 Same logic but we create a function called canActivateChild and put it into the route
+
+--- protect exit from route with canDeactivate:
+It is a bit more complex as the CanDeactivate interface needs a component. A generic way 
+to implement it would be to create a file can-deactivate-guard.service.ts
+import {
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+  CanDeactivate,
+  UrlTree,
+} from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
+export interface CanComponentDeactivate {
+  canDeactivate: () =>
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree;
+}
+
+export class CanDeactivateGuard
+  implements CanDeactivate<CanComponentDeactivate>
+{
+  canDeactivate(
+    component: CanComponentDeactivate,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    return component.canDeactivate();
+  }
+}
+
+And then in the component where i want to implement the guard, i implement the canDeactivate method with no args
+ canDeactivate():
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    if (!this.allowEdit) {
+      return true;
+    } else {
+      if (
+        this.serverName !== this.server.name ||
+        (this.serverStatus !== this.server.status && !this.changesSaved)
+      ) {
+        return confirm('Do you want to discard the changes?');
+      } else {
+        return true;
+      }
+    }
+  }
+
+And then i add it to the app-routing.module and the providers of app.module
+
+Note : it i want to tie the canDeactivate to a specific component, i can use it
+directly instead of creating the CanComponentDeactivate interface

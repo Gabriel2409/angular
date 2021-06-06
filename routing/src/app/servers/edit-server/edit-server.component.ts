@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 import { ServersService } from '../servers.service';
 
@@ -13,8 +14,10 @@ export class EditServerComponent implements OnInit {
   serverName = '';
   serverStatus = '';
   allowEdit = false;
+  changesSaved: boolean = false;
 
   constructor(
+    private router: Router,
     private serversService: ServersService,
     private route: ActivatedRoute
   ) {}
@@ -35,5 +38,25 @@ export class EditServerComponent implements OnInit {
       name: this.serverName,
       status: this.serverStatus,
     });
+    this.changesSaved = true;
+    this.router.navigate(['../']), { relativeTo: this.route };
+  }
+  canDeactivate():
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    if (!this.allowEdit) {
+      return true;
+    } else {
+      if (
+        this.serverName !== this.server.name ||
+        (this.serverStatus !== this.server.status && !this.changesSaved)
+      ) {
+        return confirm('Do you want to discard the changes?');
+      } else {
+        return true;
+      }
+    }
   }
 }
