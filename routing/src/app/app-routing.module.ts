@@ -25,7 +25,11 @@ const appRoutes: Routes = [
     component: ServersComponent,
     children: [
       { path: ':id', component: ServerComponent },
-      { path: ':id/:name', component: EditServerComponent, canDeactivate=[CanDeactivateGuard]},
+      {
+        path: ':id/:name',
+        component: EditServerComponent,
+        canDeactivate: [CanDeactivateGuard],
+      },
     ],
   },
   { path: 'not-found', component: PageNotFoundComponent },
