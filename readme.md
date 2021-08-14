@@ -1030,11 +1030,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       let count = 0;
       setInterval(() => {
         observer.next(count);
+		if (count >3){
+			observer.error(new Error("Count is greater than 3"))
+		}
         count += 1;
       }, 1000);
     });
 
-	this.firstObsSubscription = customIntervalObservable.subscribe(count=> console.log(count))
+	this.firstObsSubscription = customIntervalObservable.subscribe(count=> console.log(count), error=>{
+		console.log()
+	})
   }
 }
 ```
@@ -1044,3 +1049,54 @@ the observer has three differents methods :
 * `complete` 
 
 ## error and completion
+After an error, the observable stops emitting. Error should be handled : 
+
+```typescript
+  ngOnInit() {
+    const customIntervalObservable = Observable.create((observer) => {
+      let count = 0;
+      setInterval(() => {
+        observer.next(count);
+		if (count == 2) observer.complete()
+        if (count > 3) {
+          observer.error(new Error('Count is greater than 3'));
+        }
+        count += 1;
+      }, 1000);
+    });
+
+    this.firstObsSubscription = customIntervalObservable.subscribe(
+      (count) => {
+        console.log(count);
+      },
+      (error) => {
+        console.log(error);
+        alert(error.message);
+      }
+    );
+  }
+```
+Observables such as Http requests automatically complete. On the other hand, interval never completes. To complete our custom observable, 
+```typescript
+if (count === 2) observer.complete();
+```
+
+```typescript
+this.firstObsSubscription = customIntervalObservable.subscribe(
+  (count) => {
+    console.log(count);
+  },
+  (error) => {
+    console.log(error);
+    alert(error.message);
+  },
+  // completion handler function (no arg)
+  () => {
+    console.log("Cleaning up")
+  }
+);
+```
+Now we dont have the error at count >3 because it stops emitting when complete is called
+
+NOTE : after completion or error, no need to unsubscribe, but we can add the unsubscription anyways
+VERY IMPORTANT : completion is not fired in case of error
