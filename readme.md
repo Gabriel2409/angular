@@ -1100,3 +1100,39 @@ Now we dont have the error at count >3 because it stops emitting when complete i
 
 NOTE : after completion or error, no need to unsubscribe, but we can add the unsubscription anyways
 VERY IMPORTANT : completion is not fired in case of error
+
+## Operators
+Magic feature of rxjs library
+You can use operators between the observable and the subscriptions. 
+Which means the datapoints first reach the operators before the subscription. 
+So you can subscribe to the result of these operators
+Operators are used with pipe; Every observable has a pipe method
+
+```typescript
+import { map } from 'rxjs/operators';
+...
+this.firstObsSubscription = customIntervalObservable
+.pipe(
+  map((data: number) => {
+    return 'Round: ' + (data + 1);
+  })
+)
+.subscribe(...);
+  }
+```
+Now the map operator allow us to transform the data before receiving it in the subscribe method
+You can chain arguments in pipe. List here https://www.learnrxjs.io/learn-rxjs/operators 
+
+```typescript
+import { map, filter } from 'rxjs/operators';
+...
+
+.pipe(
+  filter((data) => {
+    return data > 0; // return true or false
+  }),
+  map((data: number) => {
+    return 'Round: ' + (data + 1);
+  })
+)
+```
