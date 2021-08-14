@@ -966,3 +966,52 @@ Three ways to handle it:
 
 Note: some observables never complete; Others such as http requests will complete eventually
 Observables are another approach at handling asynchronous events
+
+## route params observable : 
+```typescript
+ngOnInit() {
+  this.route.params.subscribe((params: Params) => {
+    this.id = +params.id;
+  });
+}
+```
+Here params is a built in observable and subscribe is our observer.  
+
+## subscribe/unsubscribe
+Observables are not core js/ts features. Instead they come from a package called rxjs
+
+example :
+```typescript 
+import { interval } from 'rxjs';
+...
+ngOnInit() {
+  interval(1000) // fires an event every second
+  .subscribe((count) => {
+    console.log(count);
+  });
+}
+```
+interval fires an event each 1000 ms here. When i navigate away from my component, it keeps on counting. 
+Note : certain observables emit values only once such as an http request but some of them will keep emitting values even if you are not interested in them anymore.
+To prevent memory leaks you must unsubsribe to observables you are not interested in anymore. 
+Final implementation : 
+```typescript 
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
+...
+export class HomeComponent implements OnInit, OnDestroy {
+  private firstObsSubscription: Subscription;
+  constructor() {}
+
+  ngOnDestroy() {
+    this.firstObsSubscription.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.firstObsSubscription = interval(1000).subscribe((count) => {
+      console.log(count);
+    });
+  }
+}
+```
+Note : observables provided by angular (such as route.params) are managed by angular and will therefore be unsubscribed automatically
