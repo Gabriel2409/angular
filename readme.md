@@ -1030,15 +1030,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       let count = 0;
       setInterval(() => {
         observer.next(count);
-		if (count >3){
-			observer.error(new Error("Count is greater than 3"))
+        if (count >3){
+          observer.error(new Error("Count is greater than 3"))
 		}
         count += 1;
       }, 1000);
     });
 
-	this.firstObsSubscription = customIntervalObservable.subscribe(count=> console.log(count), error=>{
-		console.log()
+    this.firstObsSubscription = customIntervalObservable.subscribe(count={
+      console.log(count)
+	}, 
+    error=>{
+      console.log(error)
 	})
   }
 }
@@ -1136,3 +1139,40 @@ import { map, filter } from 'rxjs/operators';
   })
 )
 ```
+
+## Subjects
+Functions the same way as event emitter (approximation). Should be used in cross component communication : seems like they are more efficient
+In the service : 
+```typescript
+import { Injectable } from '@angualr/core';
+import { Subject } from 'rxjs';
+
+@Injectable({provideIn: 'root'})
+export class MyService {
+  myEmitter = new Subject<number>()
+}
+```
+
+In the component where you emit
+```typescript
+constructor(private myService: Myservice){}
+...
+this.myService.myEmitter.next(true)
+```
+
+In the component where you subscribe
+```typescript
+constructor(private myService: Myservice){}
+...
+ngOnInit(){
+  this.myService.myEmitter.subscribe(data=> console.log(data))
+}
+```
+
+In observables, we could call next from the inside but with Subject, i can call
+next from the outside, which is why i can call next from a component, which makes it perfect as an event emitter. 
+Rule : 
+* only use event emitter in conjuction with @Output
+* for cross component communication, use Subject
+Note : same as observable, you can use operators
+Dont forget to unsubscribe in ngOnDestroy
