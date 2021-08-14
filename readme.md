@@ -953,3 +953,16 @@ ngOnInit() {
 ---- LOCATION STRATEGY
 the server must be configured so that a 404 returns the index html so that angular can then parse the route
 Alternative approach using a hash sign : in app.routing, you can pass an arg to RouterModule.forRoot : {useHash: True}
+
+# Observables
+## theory
+An observable is a datasource (events, http requests, triggered in code..)
+
+An observer is our code : for ex our subscribe functions
+Three ways to handle it: 
+* handle data
+* handle error
+* handle completion
+
+Note: some observables never complete; Others such as http requests will complete eventually
+Observables are another approach at handling asynchronous events
