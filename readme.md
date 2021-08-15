@@ -1238,3 +1238,64 @@ or like this to specify nb characters
 ```html
 {{ server.name | shorten:4 }}
 ```
+
+## Creating a filter pipe
+Generate pipe with cli : ng g p
+
+By default angular is not rerunning the pipe on the data whenever the data changes
+To be precise, updating arrays or object does not trigger it
+However it does run it again when the inputs of the pipe change.
+If you want it to be triggered on any change in the page data : 
+```typescript
+@Pipe({
+  name: 'filter',
+  pure: false,
+})
+```
+However, it can lead to performance issues so be careful. 
+Ex of a filter pipe : 
+```typescript
+export class FilterPipe implements PipeTransform {
+  transform(value: any, filterString: string, propName: string): any {
+    if (value.length === 0 || filterString === '') {
+      return value;
+    }
+    const resultArray = [];
+    for (const item of value) {
+      if (item[propName] === filterString) {
+        resultArray.push(item);
+      }
+    }
+    return resultArray;
+  }
+}
+```
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+	  <input type="text" [(ngModel)]="filteredStatus">
+	  <br>
+	  <button class="btn btn-primary" (click)="onAddServer()">Add Server</button>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let server of servers | filter:filteredStatus:'status'"
+          [ngClass]="getStatusClasses(server)">
+          <span
+            class="badge">
+            {{ server.status }}
+          </span>
+          <strong>{{ server.name |shorten }}</strong> | 
+		  {{ server.instanceType | uppercase }} | 
+		  {{ server.started  | date:'fullDate' | uppercase}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+```
+
+For pure pipes, if i add a server while the filter is on, i wont see it until I 
+change the input. For impure pipes, i will see it directly 
