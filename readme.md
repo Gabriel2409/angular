@@ -1321,5 +1321,42 @@ the built in async pipe will recognize promises (and observables) and display th
 Dont store credentials in angular
 
 ## create db service in firestore : 
+NOTE : this is not a database but a service. Angular should never communicated directly with a database
+
 start in test mode
-https://ng-complete-guide-de7b3-default-rtdb.europe-west1.firebasedatabase.app/
+https://ng-complete-guide-f3876-default-rtdb.firebaseio.com/
+
+## sending post request
+
+in app.module.ts 
+
+```typescript
+import { HttpClientModule } from '@angular/common/http';
+@NgModule({
+  ...
+  imports: [..., HttpClientModule],
+  ...
+})
+```
+
+in component
+```typescript
+import { HttpClient } from '@angular/common/http';
+
+....
+
+constructor(private http: HttpClient) {}
+
+onCreatePost(postData: { title: string; content: string }) {
+// angular automatically converts our js object to json
+  this.http.post(this.baseUrl + "/posts.json", postData).subscribe(
+    (res) => {
+      // no need to unsubscribe as it completes anyways after res is sent
+      console.log(res);
+    },
+  );
+}
+
+```
+
+http requests are observables. Which means we have to subscribe to a http request. If not, it means we are not interested in the response and angular does not even send the request
