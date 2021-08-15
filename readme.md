@@ -1214,3 +1214,27 @@ for ex, the slice pipe :
 {{ server.started  | date:'fullDate' | uppercase}}
 ```
 Order is important (generally parsed from left to right)
+
+## Creating a custom pipe : 
+* `shorten.pipe.ts`
+```typescript
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'shorten',
+})
+export class ShortenPipe implements PipeTransform {
+  transform(value: any, nbCharacters: number = 10) {
+    return value.substr(0, nbCharacters);
+  }
+}
+```
+in app.module.ts, add `ShortenPipe` in `declarations`
+in component, use like this  for default value
+```html
+{{ server.name | shorten }}
+```
+or like this to specify nb characters
+```html
+{{ server.name | shorten:4 }}
+```
