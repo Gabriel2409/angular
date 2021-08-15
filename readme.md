@@ -1190,3 +1190,27 @@ For ex, in your template, use the builtin uppercase pipe :
 <p>{{ username | uppercase}}</p>
 ```
 it will modify what is shown without modifying the property
+Note : `|` is a symbol called "pipe" hence the name "pipes"
+
+## Parametrizing Pipes
+To configure a pipe, you add a `:`
+Example with the built in date pipe : 
+```html
+{{ server.started  | date:'fullDate' }}
+```
+Note : if a pipe takes several parameters, you would do something like
+```html
+{{ myproperty  | mypipe:'value1':'value2' }}
+```
+
+## Where to learn more
+https://angular.io/api?type=pipe 
+for ex, the slice pipe : 
+```html   
+{{ value_expression | slice : start [ : end ] }}
+```
+## Chaining multiple pipes
+```html  
+{{ server.started  | date:'fullDate' | uppercase}}
+```
+Order is important (generally parsed from left to right)
