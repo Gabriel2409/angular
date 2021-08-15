@@ -1299,3 +1299,20 @@ export class FilterPipe implements PipeTransform {
 
 For pure pipes, if i add a server while the filter is on, i wont see it until I 
 change the input. For impure pipes, i will see it directly 
+
+## Async pipe
+in my component: 
+```typescript
+export class AppComponent {
+  appStatus = new Promise((resolve, reject)=>{
+	  setTimeout(()=>{
+		  resolve("stable")
+	  }, 2000)
+  })
+  ...
+```
+in html
+```html
+<h2>App status: {{ appStatus | async}}</h2>
+```
+the built in async pipe will recognize promises (and observables) and display the resulting value when the promise is finished
