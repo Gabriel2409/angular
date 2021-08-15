@@ -1316,3 +1316,10 @@ in html
 <h2>App status: {{ appStatus | async}}</h2>
 ```
 the built in async pipe will recognize promises (and observables) and display the resulting value when the promise is finished
+
+# Http requests
+Dont store credentials in angular
+
+## create db service in firestore : 
+start in test mode
+https://ng-complete-guide-de7b3-default-rtdb.europe-west1.firebasedatabase.app/
