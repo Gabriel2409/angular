@@ -1176,3 +1176,17 @@ Rule :
 * for cross component communication, use Subject
 Note : same as observable, you can use operators
 Dont forget to unsubscribe in ngOnDestroy
+
+# Forms
+## TODO
+## TODO
+## TODO
+
+# Pipes
+## Main purpose
+Transform output in your templates
+For ex, in your template, use the builtin uppercase pipe : 
+```html
+<p>{{ username | uppercase}}</p>
+```
+it will modify what is shown without modifying the property
