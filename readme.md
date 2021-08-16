@@ -1393,3 +1393,25 @@ private fetchPosts() {
   });
 }
 ```
+
+## Types with http client. 
+To get better autocompletion, you can do something like this : 
+```typescript
+this.http
+  .get(this.baseUrl + '/posts.json')
+  .pipe(
+    map((responseData: { [key: string]: Post }) => {
+```
+However, with http client, there is a more elegant way. Instead the get method is a so called generic method
+```typescript
+this.http
+  .get<{ [key: string]: Post }>(this.baseUrl + '/posts.json')
+  .pipe(
+    map((responseData) => {
+```
+Note that this functionality is available for all http requests. 
+For post requests, what we put between <> is the format of the response not the request body. In our case : 
+```typescript
+onCreatePost(postData: Post) {
+  this.http.post<{name: string}>(...
+```

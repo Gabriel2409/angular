@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,10 @@ export class AppComponent implements OnInit {
 
   private fetchPosts() {
     this.http
-      .get(this.baseUrl + '/posts.json')
+      .get<{ [key: string]: Post }>(this.baseUrl + '/posts.json')
       .pipe(
         map((responseData) => {
-          const postArray = [];
+          const postArray: Post[] = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
               postArray.push({ ...responseData[key], id: key });
@@ -37,9 +38,9 @@ export class AppComponent implements OnInit {
     this.fetchPosts();
   }
 
-  onCreatePost(postData: { title: string; content: string }) {
+  onCreatePost(postData: Post) {
     // angular automatically converts our js object to json
-    this.http.post(this.baseUrl + '/posts.json', postData).subscribe((res) => {
+    this.http.post<{name: string}>(this.baseUrl + '/posts.json', postData).subscribe((res) => {
       // no need to unsubscribe as it completes anyways after res is sent
       console.log(res);
     });
