@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((posts) => {
-        console.log(posts);
+        this.loadedPosts = posts;
       });
   }
 
@@ -40,10 +40,12 @@ export class AppComponent implements OnInit {
 
   onCreatePost(postData: Post) {
     // angular automatically converts our js object to json
-    this.http.post<{name: string}>(this.baseUrl + '/posts.json', postData).subscribe((res) => {
-      // no need to unsubscribe as it completes anyways after res is sent
-      console.log(res);
-    });
+    this.http
+      .post<{ name: string }>(this.baseUrl + '/posts.json', postData)
+      .subscribe((res) => {
+        // no need to unsubscribe as it completes anyways after res is sent
+        console.log(res);
+      });
   }
 
   onFetchPosts() {
