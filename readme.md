@@ -1320,13 +1320,13 @@ the built in async pipe will recognize promises (and observables) and display th
 # Http requests
 Dont store credentials in angular
 
-## create db service in firestore : 
+## Create db service in firestore : 
 NOTE : this is not a database but a service. Angular should never communicated directly with a database
 
 start in test mode
 https://ng-complete-guide-f3876-default-rtdb.firebaseio.com/
 
-## sending post request
+## Sending post request
 
 in app.module.ts 
 
@@ -1361,7 +1361,7 @@ onCreatePost(postData: { title: string; content: string }) {
 
 http requests are observables. Which means we have to subscribe to a http request. If not, it means we are not interested in the response and angular does not even send the request
 
-## get requests 
+## Get requests 
 ```typescript
 private fetchPosts() {
   this.http.get(this.baseUrl + '/posts.json').subscribe((posts) => {
@@ -1371,7 +1371,7 @@ private fetchPosts() {
 ```
 the data we get is a bit messy, we have to transform it ! 
 
-## using rxjs operators to transform response data
+## Using rxjs operators to transform response data
 The data returned is in the form of nested object, so we use pipe to transform it. 
 ```typescript
 private fetchPosts() {
@@ -1394,7 +1394,7 @@ private fetchPosts() {
 }
 ```
 
-## Types with http client. 
+## Types with http client
 To get better autocompletion, you can do something like this : 
 ```typescript
 this.http
@@ -1414,4 +1414,37 @@ For post requests, what we put between <> is the format of the response not the 
 ```typescript
 onCreatePost(postData: Post) {
   this.http.post<{name: string}>(...
+```
+
+## Using services 
+Best practice : in service do http request and transformation of data.
+In component, subscribe to result
+
+Service : 
+```typescript
+fetchPosts() {
+  return this.http
+    .get<{ [key: string]: Post }>(this.baseUrl + '/posts.json')
+    .pipe(
+      map((responseData) => {
+        const postArray: Post[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            postArray.push({ ...responseData[key], id: key });
+          }
+        }
+        return postArray;
+      })
+    )
+}
+```
+Component : 
+```typescript
+onFetchPosts() {
+  this.isFetching = true;
+  this.postsService.fetchPosts().subscribe((posts) => {
+    this.loadedPosts = posts;
+    this.isFetching = false;
+  });
+}
 ```

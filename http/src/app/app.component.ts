@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { Post } from './post.model';
+import { PostsService } from './posts.service';
 
 @Component({
   selector: 'app-root',
@@ -14,47 +14,26 @@ export class AppComponent implements OnInit {
   baseUrl: string =
     'https://ng-complete-guide-f3876-default-rtdb.firebaseio.com/';
 
-  private fetchPosts() {
-	this.isFetching = true
-    this.http
-      .get<{ [key: string]: Post }>(this.baseUrl + '/posts.json')
-      .pipe(
-        map((responseData) => {
-          const postArray: Post[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              postArray.push({ ...responseData[key], id: key });
-            }
-          }
-          return postArray;
-        })
-      )
-      .subscribe((posts) => {
-        this.loadedPosts = posts;
-	    this.isFetching = false
-
-      });
-  }
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchPosts();
+    this.isFetching = true;
+    this.postsService.fetchPosts().subscribe((posts) => {
+      this.loadedPosts = posts;
+      this.isFetching = false;
+    });
   }
 
   onCreatePost(postData: Post) {
-    // angular automatically converts our js object to json
-    this.http
-      .post<{ name: string }>(this.baseUrl + '/posts.json', postData)
-      .subscribe((res) => {
-        // no need to unsubscribe as it completes anyways after res is sent
-        console.log(res);
-      });
+    this.postsService.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts() {
-    // Send Http request
-    this.fetchPosts();
+    this.isFetching = true;
+    this.postsService.fetchPosts().subscribe((posts) => {
+      this.loadedPosts = posts;
+      this.isFetching = false;
+    });
   }
 
   onClearPosts() {
