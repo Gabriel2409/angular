@@ -1448,3 +1448,10 @@ onFetchPosts() {
   });
 }
 ```
+
+## delete request
+```typescript
+clearPosts() {
+  return this.http.delete(this.baseUrl + '/posts.json');
+}
+```

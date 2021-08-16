@@ -37,6 +37,10 @@ export class PostsService {
           }
           return postArray;
         })
-      )
+      );
+  }
+
+  clearPosts() {
+    return this.http.delete(this.baseUrl + '/posts.json');
   }
 }
