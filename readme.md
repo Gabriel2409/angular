@@ -1360,3 +1360,36 @@ onCreatePost(postData: { title: string; content: string }) {
 ```
 
 http requests are observables. Which means we have to subscribe to a http request. If not, it means we are not interested in the response and angular does not even send the request
+
+## get requests 
+```typescript
+private fetchPosts() {
+  this.http.get(this.baseUrl + '/posts.json').subscribe((posts) => {
+    console.log(posts);
+  });
+}
+```
+the data we get is a bit messy, we have to transform it ! 
+
+## using rxjs operators to transform response data
+The data returned is in the form of nested object, so we use pipe to transform it. 
+```typescript
+private fetchPosts() {
+  this.http
+  .get(this.baseUrl + '/posts.json')
+  .pipe(
+    map((responseData) => {
+      const postArray = [];
+      for (const key in responseData) {
+        if (responseData.hasOwnProperty(key)) {
+          postArray.push({ ...responseData[key], id: key });
+        }
+      }
+      return postArray;
+    })
+  )
+  .subscribe((posts) => {
+    console.log(posts);
+  });
+}
+```
