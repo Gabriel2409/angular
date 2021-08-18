@@ -1596,5 +1596,11 @@ HttpEventType is an enum :
 * Response = 4,
 * User = 5
 
-
+## Response type
+By default angular expects json. But we can chage the responseType in the options, for ex 
+```typescript
+{
+  responseType: 'text' // or 'json' or 'blob'
+}
+```
 
