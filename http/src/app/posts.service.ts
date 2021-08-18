@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,8 @@ import { map } from 'rxjs/operators';
 export class PostsService {
   baseUrl: string =
     'https://ng-complete-guide-f3876-default-rtdb.firebaseio.com/';
+
+  errorMessage = new Subject<string>();
 
   constructor(private http: HttpClient) {}
   createAndStorePost(title: string, content: string) {
@@ -18,10 +21,15 @@ export class PostsService {
     };
     this.http
       .post<{ name: string }>(this.baseUrl + '/posts.json', postData)
-      .subscribe((res) => {
-        // no need to unsubscribe as it completes anyways after res is sent
-        console.log(res);
-      });
+      .subscribe(
+        (res) => {
+          // no need to unsubscribe as it completes anyways after res is sent
+          console.log(res);
+        },
+        (error) => {
+          this.errorMessage.next(error.message);
+        }
+      );
   }
 
   fetchPosts() {
@@ -36,6 +44,11 @@ export class PostsService {
             }
           }
           return postArray;
+        }),
+        catchError((errorRes) => {
+          console.log('Sending to analytics');
+          // pass the errorRes: it needs to reach subscribe
+          return throwError(errorRes);
         })
       );
   }

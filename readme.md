@@ -21,7 +21,7 @@ it automatically updates the declaration in the app.module.ts
 
 -----
 ## data binding 
-###from ts to html 
+### from ts to html 
 string interpolation `{{ myvar }}` in the html references myvar in ts
 property binding `[property]="data"`
 
@@ -1449,9 +1449,83 @@ onFetchPosts() {
 }
 ```
 
-## delete request
+## Delete request
 ```typescript
 clearPosts() {
   return this.http.delete(this.baseUrl + '/posts.json');
 }
 ```
+
+## Error handling
+### Standard way
+```typescript
+onFetchPosts() {
+  this.isFetching = true;
+  this.postsService.fetchPosts().subscribe((posts) => {
+    this.loadedPosts = posts;
+    this.isFetching = false;
+  }, error =>{
+	this.isFetching = false;
+	console.log(error)
+  });
+}
+```
+
+### With subject
+useful if i dont subscribe in the component but in the service directly
+In the service 
+```typescript
+errorMessage = new Subject<string>();
+...
+createAndStorePost(title: string, content: string) {
+  const postData: Post = {
+    title: title,
+    content: content,
+  };
+  this.http
+    .post<{ name: string }>(this.baseUrl + '/posts.json', postData)
+    .subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        this.errorMessage.next(error.message);
+      }
+    );
+}
+```
+
+In the component, I subscribe to errorMessage
+
+### catchError operator
+```typescript
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+...
+export class PostsService {
+
+ ...
+
+  fetchPosts() {
+    return this.http
+      .get<{ [key: string]: Post }>(this.baseUrl + '/posts.json')
+      .pipe(
+        map((responseData) => {
+          const postArray: Post[] = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              postArray.push({ ...responseData[key], id: key });
+            }
+          }
+          return postArray;
+        }),
+        catchError((errorRes) => {
+          console.log('Sending to analytics');
+          // pass the errorRes: it needs to reach subscribe
+          return throwError(errorRes);
+        })
+      );
+  }
+```
+
+## Setting headers
