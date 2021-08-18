@@ -1,7 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
 
 @Injectable({
@@ -20,7 +25,9 @@ export class PostsService {
       content: content,
     };
     this.http
-      .post<{ name: string }>(this.baseUrl + '/posts.json', postData)
+      .post<{ name: string }>(this.baseUrl + '/posts.json', postData, {
+        observe: 'response', // 'body' | 'events' | 'response' - 'body' by default
+      })
       .subscribe(
         (res) => {
           // no need to unsubscribe as it completes anyways after res is sent
@@ -59,6 +66,16 @@ export class PostsService {
   }
 
   clearPosts() {
-    return this.http.delete(this.baseUrl + '/posts.json');
+    return this.http
+      .delete(this.baseUrl + '/posts.json', {
+        observe: 'events',
+      })
+      .pipe(
+        tap((event) => {
+          if (event.type === HttpEventType.Response) {
+            console.log(event.body);
+          }
+        })
+      );
   }
 }

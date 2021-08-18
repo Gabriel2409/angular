@@ -1552,3 +1552,49 @@ this.http.get<{ [key: string]: Post }>(this.baseUrl + '/posts.json',
     .append('search', 'mystring'), // add a new value
 })
 ```
+
+## Observing different types of response. 
+Up until now, we only looked at the response body. But sometimes we need to look at the response headers or status for ex. 
+So instead of only the body, we can get the full response. 
+In the options object, i can add the `observe` key with :
+* `'body'` gives the default response 
+* `'response'` gives the full response
+* `'events'`  outputs all the events
+ 
+```typescript
+this.http
+  .post<{ name: string }>(this.baseUrl + '/posts.json', postData, {
+    observe: 'response', // 'body' | 'events' | 'response' - 'body' by default
+  })
+```
+```typescript
+import { tap } from 'rxjs/operators';
+import {HttpEventType} from '@angular/common/http';
+
+...
+
+return this.http
+  .delete(this.baseUrl + '/posts.json', {
+    observe: 'events',
+  })
+  .pipe(
+    tap((event) => {
+	  if (event.type === HttpEventType.Response){
+		  console.log(event.body);
+	  }	
+	  // don't return anything, it does alter the dataflow
+    })
+  );
+}
+```
+tap allows to execute some code without altering the response
+HttpEventType is an enum : 
+* Sent = 0,
+* UploadProgress = 1,
+* ResponseHeader = 2,
+* DownloadProgress = 3,
+* Response = 4,
+* User = 5
+
+
+
