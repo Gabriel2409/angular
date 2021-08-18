@@ -1529,3 +1529,26 @@ export class PostsService {
 ```
 
 ## Setting headers
+In the http request, we can add an options object (extra arg)
+```typescript
+import { HttpHeaders } from '@angular/common/http';
+
+...
+this.http.get<{ [key: string]: Post }>(this.baseUrl + '/posts.json',
+{
+  headers: new HttpHeaders({"Custom-Header": "Hello"})
+})
+
+```
+import { HttpParams } from '@angular/common/http';
+
+## Query params
+```typescript
+this.http.get<{ [key: string]: Post }>(this.baseUrl + '/posts.json',
+{
+  headers: new HttpHeaders({"Custom-Header": "Hello"}),
+  params: new HttpParams()
+    .set('print', 'pretty') // overwrites values
+    .append('search', 'mystring'), // add a new value
+})
+```
