@@ -1604,3 +1604,94 @@ By default angular expects json. But we can chage the responseType in the option
 }
 ```
 
+## Interceptor
+ 
+### Providing the service
+add some code each time a request leaves the app
+An interceptor is a service but the way we provide it is a bit different than usual. 
+
+For ex : in the service : 
+```typescript
+import {
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
+
+export class AuthInterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    console.log('Request is on its way');
+    return next.handle(req); // lets the request continue
+  }
+}
+```
+
+In app.module.ts
+```typescript
+import {  HTTP_INTERCEPTORS } from '@angular/common/http';
+...
+@NgModule({
+  ...
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, // special keyword
+      useClass: AuthInterceptorService, 
+      multi: true, // allows multiple interceptors
+    },
+  ],
+  ...
+```
+
+### Modify the request object inside the interceptor
+The request object is immutable and therefore, inside the interceptor, we can not do `req.url = 'something'`
+Instead, we call `request.clone` and pass a js object where we can overwrite all the core things
+For ex : 
+
+```typescript
+export class AuthInterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    console.log('Request is on its way');
+    const modifiedRequest = req.clone({
+      headers: req.headers.append('Auth', 'xyz'),
+    });
+    return next.handle(modifiedRequest); // forwards the modified req
+  }
+}
+```
+### Response interceptor
+In the interceptor, you can interact with the request as shown above. 
+You can also interact with the response : 
+```typescript
+return next
+      .handle(modifiedRequest) // observable
+      .pipe(
+        tap((event) => {
+          // no matter which responsetype you chose,
+          // in interceptors you always get an event
+          console.log('event', event);
+          if (event.type == HttpEventType.Response) {
+            console.log('Response arrived');
+            console.log(event.body);
+          }
+        })
+      );
+  }
+```
+
+## Multiple interceptors
+in app.module
+```typescript
+providers: [
+    {
+      provide: HTTP_INTERCEPTORS, // special keyword
+      useClass: AuthInterceptorService,
+      multi: true, // allows multiple interceptors
+    },
+    {
+      provide: HTTP_INTERCEPTORS, // special keyword
+      useClass: LoggingInterceptorService,
+      multi: true, // allows multiple interceptors
+    },
+  ],
+```
+Note : the order is important
