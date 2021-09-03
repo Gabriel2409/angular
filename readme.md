@@ -1695,3 +1695,143 @@ providers: [
   ],
 ```
 Note : the order is important
+
+# OTHER STUFF
+## TODO
+## TODO
+## TODO
+## TODO
+
+# Unit Testing
+We use jasmine to test angular
+Just run `ng test` to launch the tests
+
+## Testing app.component
+```typescript
+import { TestBed, async } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+
+describe('App: CompleteGuideFinalWebpack', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppComponent
+      ],
+    });
+  });
+  it('should create the app', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
+
+  it(`should have as title 'app works!'`, async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('app works!');
+  }));
+});
+```
+First `TestBed` is used for the testing; 
+`beforeEach` is executed before each test (which are executed independently)
+Instructions are pretty straightforward
+
+## Testing a basic component 
+```html
+<div *ngIf="isLoggedIn">
+  <h1>User logged in</h1>
+  <p>User is: {{ user.name }}</p>
+</div>
+<div *ngIf="!isLoggedIn">
+  <h1>User not logged in</h1>
+  <p>Please log in first</p>
+</div>
+```
+```typescript
+export class UserComponent implements OnInit {
+  user: { name: string };
+  isLoggedIn = false;
+  constructor() {}
+  ngOnInit() {}
+}
+```
+Now lets test it 
+```typescript
+describe('Component: User', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [UserComponent],
+    });
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
+});
+```
+Same idea as app.component here
+
+## Testing dependencies: components and services
+Lets create a service and provide it to the user component
+```typescript
+export class UserService {
+  user = {
+    name: 'Gab'
+  };
+}
+```
+In the user component
+```typescript
+constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.user = this.userService.user;
+  }
+```
+Now to test it, we need to get the username from the service
+```typescript
+it('should use the user name from the service', () => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const app = fixture.debugElement.componentInstance;
+
+    const userService = fixture.debugElement.injector.get(UserService);
+	expect(userService.user.name).toEqual(app.user.name)
+  });
+```
+Here i get an error and the test fails: app.user is undefined. Indeed, we missed the lifecycle hooks that happen automatically in angular. 
+Indeed the user.name is set on ngOnInit;
+Here we have to run them ourselves. To fix this:
+```typescript
+it('should use the user name from the service', () => {
+    ...
+    const userService = ...
+	fixture.detectChanges();
+	expect ...
+  });
+```
+and now it works.
+To test now what is displayed, i need to access the template
+```typescript
+it('should display the username if user is logged in', () => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const app = fixture.debugElement.componentInstance;
+	// no need to access the injected userService here because i dont want
+	// to test it
+	app.isLoggedIn = true // modified the isLoggedIn attr
+    fixture.detectChanges();
+    let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('p').textContent).toContain(app.user.name);
+  });
+```
+and of course
+```typescript
+it("shouldn't display the username if user is not logged in", () => {
+    ...
+    // no overwriting of isLoggedIn here
+    expect(compiled.querySelector('p').textContent).not.toContain(
+      app.user.name
+    );
+  });
+```
