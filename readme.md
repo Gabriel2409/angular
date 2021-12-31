@@ -58,6 +58,7 @@
   - [Template Driven Approach](#template-driven-approach)
     - [Form Basics](#form-basics)
     - [Getting the js object](#getting-the-js-object)
+    - [Another way to submit with ViewChild](#another-way-to-submit-with-viewchild)
   - [Reactive Approach](#reactive-approach)
 - [Pipes](#pipes)
   - [Main purpose](#main-purpose)
@@ -1532,6 +1533,24 @@ import { NgForm } from '@angular/forms';
 - Note: in the template, arg of on submit must have same name as template ref
 - Note 2: the ="ngForm" tels angular to get the form js object
 - The form object has a lot of properties. The values entered by the user are in the value attribute
+
+### Another way to submit with ViewChild
+
+```html
+<form (ngSubmit)="onSubmit()" #myform="ngForm"></form>
+```
+
+```typescript
+import { NgForm } from '@angular/forms';
+
+@ViewChild('myform') myform: NgForm;
+onSubmit() {
+    console.log(this.myform);
+}
+```
+
+Instead of passing myform to submit, we instead use the ref to get it via ViewChild
+This is useful if we want to access the form before submit
 
 ## Reactive Approach
 
